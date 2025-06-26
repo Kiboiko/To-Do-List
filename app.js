@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Функция добавления задачи (только создает элемент, не сохраняет)
     function createTaskElement(taskText, isCompleted = false) {
         const taskItem = document.createElement('li');
         taskItem.className = 'task-item';
@@ -28,6 +27,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isCompleted) {
             taskItem.classList.add('completed');
         }
+
+        const dateInput = document.createElement('input');
+        dateInput.type = 'date';
+        dateInput.className = 'task-dateBox';
         
         const textSpan = document.createElement('span');
         textSpan.className = 'task-text';
@@ -40,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
         taskItem.appendChild(checkbox);
         taskItem.appendChild(textSpan);
         taskItem.appendChild(deleteBtn);
+        taskItem.appendChild(dateInput);
         
         checkbox.addEventListener('change', toggleTask);
         deleteBtn.addEventListener('click', deleteTask);
@@ -47,28 +51,24 @@ document.addEventListener('DOMContentLoaded', function() {
         return taskItem;
     }
 
-    // Добавление новой задачи (с сохранением)
     function addTask(taskText) {
         const taskItem = createTaskElement(taskText);
         taskList.appendChild(taskItem);
         saveTasks();
     }
 
-    // Переключение состояния задачи
     function toggleTask(e) {
         const taskItem = e.target.parentElement;
         taskItem.classList.toggle('completed');
         saveTasks();
     }
     
-    // Удаление задачи
     function deleteTask(e) {
         const taskItem = e.target.parentElement;
         taskItem.remove();
         saveTasks();
     }
 
-    // Сохранение задач
     function saveTasks() {
         const tasks = [];
         document.querySelectorAll('.task-item').forEach(taskItem => {
@@ -80,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }
 
-    // Загрузка задач
     function loadTasks() {
         const savedTasks = localStorage.getItem('tasks');
         if (savedTasks) {

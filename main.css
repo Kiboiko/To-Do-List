@@ -1,9 +1,23 @@
+:root{
+    --bg-color:#DDE6ED;
+}
+
+
 body {
   font-family: Arial, sans-serif;
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
 }
+
+.container{
+    text-align: center;
+    background-color: var(--bg-color);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
 
 h1 {
   text-align: center;
@@ -47,6 +61,14 @@ h1 {
   align-items: center;
   padding: 10px;
   border-bottom: 1px solid #eee;
+  transition: all 0.3s ease;
+  transform: perspective(1000px) translateZ(0);
+  word-wrap: break-word;
+}
+
+.task-item:hover{
+    transform: perspective(1000px) translateZ(20px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
 .task-item.completed {
@@ -64,6 +86,10 @@ h1 {
 
 .task-text {
   flex-grow: 1;
+  white-space: pre-wrap; /* Сохраняет пробелы и переносы */
+  word-break: break-word; /* Переносит длинные слова */
+  overflow-wrap: anywhere; /* Альтернатива для word-break */
+  margin-right: 10px;
 }
 
 .delete-btn {
@@ -74,8 +100,10 @@ h1 {
   padding: 5px 10px;
   cursor: pointer;
   margin-left: 10px;
+  margin-right: 10px;
 }
 
 .delete-btn:hover {
   background-color: #d32f2f;
 }
+
