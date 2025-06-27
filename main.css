@@ -57,13 +57,14 @@ h1 {
 }
 
 .task-item {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-  transition: all 0.3s ease;
-  transform: perspective(1000px) translateZ(0);
-  word-wrap: break-word;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    transition: all 0.3s ease;
+    transform: perspective(1000px) translateZ(0);
+    word-wrap: break-word;
 }
 
 .task-item:hover{
@@ -72,38 +73,65 @@ h1 {
 }
 
 .task-item.completed {
-  background-color: #f9f9f9;
+    background-color: #f9f9f9;
 }
 
 .task-item.completed .task-text {
-  text-decoration: line-through;
-  color: #888;
+    text-decoration: line-through;
+    color: #888;
 }
 
 .task-checkbox {
-  margin-right: 10px;
+  margin: 10px;
 }
 
 .task-text {
-  flex-grow: 1;
-  white-space: pre-wrap; /* Сохраняет пробелы и переносы */
-  word-break: break-word; /* Переносит длинные слова */
-  overflow-wrap: anywhere; /* Альтернатива для word-break */
-  margin-right: 10px;
+    flex-grow: 1;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    margin-right: 10px;
 }
 
 .delete-btn {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 5px 10px;
-  cursor: pointer;
-  margin-left: 10px;
-  margin-right: 10px;
+    position: relative;
+    z-index: 1;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.task-datebox{
+    position: relative;
+    z-index: 1;
 }
 
 .delete-btn:hover {
   background-color: #d32f2f;
 }
+
+li {
+    position: relative;
+    width: 100%;
+    transition: width 0.5s;
+}
+
+.task-content{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1; /* Оставляем позади всех элементов */
+    width: 70%; /* Занимает всю ширину */
+    background-color: #45a049;
+    border-radius: 4px;
+}
+
+
 
