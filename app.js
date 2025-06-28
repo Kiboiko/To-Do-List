@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const progr = document.createElement('div');
         progr.className = 'task-content';
+        progr.style.opacity = '0';
 
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
@@ -36,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (deadline) {
             dateInput.value = deadline;
         }
+
         
         const textSpan = document.createElement('span');
         textSpan.className = 'task-text';
@@ -54,8 +56,8 @@ document.addEventListener('DOMContentLoaded', function() {
         checkbox.addEventListener('change', toggleTask);
         deleteBtn.addEventListener('click', deleteTask);
         dateInput.addEventListener('change', function() {
+            updateTaskProgress();
             saveTasks();
-            updateTaskProgress(); // Обновляем прогресс при изменении даты
         });
         
         return taskItem;
@@ -75,8 +77,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function deleteTask(e) {
         const taskItem = e.target.closest('.task-item');
-        taskItem.remove();
-        saveTasks();
+        taskItem.classList.add('removing');
+        setTimeout(() => {
+            taskItem.remove();
+            saveTasks();
+        }, 400);
     }
 
     function saveTasks() {
@@ -117,14 +122,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 taskContent.style.width = '0%';
                 taskContent.style.backgroundPosition = 'left';
                 return;
-            }
-            
+            } 
+            taskContent.style.opacity = '1';
             const deadline = new Date(dateInput.value);
             const timeDiff = deadline - now;
             
             if (timeDiff <= 0) {
                 taskContent.style.width = '0%';
-                taskContent.style.backgroundPosition = 'right';
                 return;
             }
             

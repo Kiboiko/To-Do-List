@@ -59,7 +59,6 @@ h1 {
 #task-list {
   list-style-type: none;
   padding: 0px;
-  
 }
 
 .task-item {
@@ -74,6 +73,13 @@ h1 {
     max-width: 100%;
     box-sizing: border-box;
     overflow: hidden;
+    border-radius: 1rem;
+    transition: all 0.3s ease, opacity 0.4s;
+}
+
+.task-item.removing {
+  opacity: 0;
+  transform: translateX(-100%);
 }
 
 .task-item:hover{
@@ -87,7 +93,6 @@ h1 {
 
 .task-item.completed .task-text {
     text-decoration: line-through;
-    color: #888;
 }
 
 .task-checkbox {
@@ -141,6 +146,10 @@ li {
     background-color: #45a049;
     border-radius: 4px;
 } */
+
+
+
+
 
 .task-content {
   position: absolute;
