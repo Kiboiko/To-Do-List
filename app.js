@@ -3,10 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const taskInput = document.getElementById('task-input');
     const taskList = document.getElementById('task-list');
 
-    // Загрузка задач при старте
     loadTasks();
 
-    // Обработчик добавления задачи
     taskForm.addEventListener('submit', function(e) {
         e.preventDefault();
         const taskText = taskInput.value.trim();
@@ -16,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    function createTaskElement(taskText, isCompleted = false) {
+    function createTaskElement(taskText, isCompleted = false,deadline = null) {
         const taskItem = document.createElement('li');
         taskItem.className = 'task-item';
 
@@ -34,6 +32,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const dateInput = document.createElement('input');
         dateInput.type = 'date';
         dateInput.className = 'task-dateBox';
+
+        if (deadline) {
+            dateInput.value = deadline;
+        }
         
         const textSpan = document.createElement('span');
         textSpan.className = 'task-text';
@@ -51,6 +53,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         checkbox.addEventListener('change', toggleTask);
         deleteBtn.addEventListener('click', deleteTask);
+        dateInput.addEventListener('change', function() {
+            saveTasks();
+            updateTaskProgress(); // Обновляем прогресс при изменении даты
+        });
         
         return taskItem;
     }
@@ -91,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 const tasks = JSON.parse(savedTasks);
                 tasks.forEach(task => {
-                    const taskItem = createTaskElement(task.text, task.completed);
+                    const taskItem = createTaskElement(task.text, task.completed,task.deadline);
                     taskList.appendChild(taskItem);
                 });
             } catch (e) {
@@ -108,26 +114,24 @@ document.addEventListener('DOMContentLoaded', function() {
             const taskContent = taskItem.querySelector('.task-content');
             
             if (!dateInput.value) {
-            taskContent.style.width = '0%';
-            taskContent.style.backgroundPosition = 'left';
-            return;
+                taskContent.style.width = '0%';
+                taskContent.style.backgroundPosition = 'left';
+                return;
             }
             
             const deadline = new Date(dateInput.value);
             const timeDiff = deadline - now;
             
             if (timeDiff <= 0) {
-            // Просрочено - показываем только красный
-            taskContent.style.width = '100%';
-            taskContent.style.backgroundPosition = 'right';
-            return;
+                taskContent.style.width = '0%';
+                taskContent.style.backgroundPosition = 'right';
+                return;
             }
             
             const maxPeriod = 30 * 24 * 60 * 60 * 1000; // 30 дней
             const progress = Math.min(timeDiff, maxPeriod) / maxPeriod;
-            const widthPercentage = Math.max(5, Math.min(100, progress * 100)); // Минимум 5% ширины
+            const widthPercentage = Math.max(1, Math.min(100, progress * 100));
             
-            // Вычисляем позицию градиента
             const gradientPosition = 100 - widthPercentage;
             
             taskContent.style.width = `${widthPercentage}%`;
@@ -135,41 +139,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         }
 
-        // Первый запуск
         updateTaskProgress();
 
-        // Обновление каждую секунду
         setInterval(updateTaskProgress, 1000);
 
     
-
-    // function updateTaskColor(e) {
-    //     const taskItem = e.target.closest('.task-item');
-    //     const taskContent = taskItem.querySelector('.task-content');
-    //     const deadline = e.target.value;
-        
-    //     if (!deadline) {
-    //         taskContent.style.backgroundColor = '#45a049';
-    //         return;
-    //     }
-        
-    //     const deadlineDate = new Date(deadline);
-    //     const today = new Date();
-    //     const timeDiff = deadlineDate - today;
-    //     const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-        
-    //     if (daysDiff > 7) {
-    //         taskContent.style.backgroundColor = '#4CAF50';
-    //     } else if (daysDiff > 3) {
-    //         taskContent.style.backgroundColor = '#FFC107';
-    //     } else if (daysDiff >= 0) {
-    //         taskContent.style.backgroundColor = '#F44336'; 
-    //     } else {
-    //         taskContent.style.backgroundColor = '#9E9E9E';
-    //     }
-    // }
-
-
-
-
 });
