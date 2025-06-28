@@ -108,7 +108,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const taskContent = taskItem.querySelector('.task-content');
             
             if (!dateInput.value) {
-            taskContent.style.width = '100%';
+            taskContent.style.width = '0%';
+            taskContent.style.backgroundPosition = 'left';
             return;
             }
             
@@ -116,55 +117,57 @@ document.addEventListener('DOMContentLoaded', function() {
             const timeDiff = deadline - now;
             
             if (timeDiff <= 0) {
-            // Дедлайн прошел
-            taskContent.style.width = '0%';
+            // Просрочено - показываем только красный
+            taskContent.style.width = '100%';
+            taskContent.style.backgroundPosition = 'right';
             return;
             }
             
-            // Максимальный период для прогресса (например, 30 дней)
-            const maxPeriod = 30 * 24 * 60 * 60 * 1000; // 30 дней в миллисекундах
-            const initialWidth = 100; // Начальная ширина 100%
-            
-            // Вычисляем прогресс (но не больше максимального периода)
+            const maxPeriod = 30 * 24 * 60 * 60 * 1000; // 30 дней
             const progress = Math.min(timeDiff, maxPeriod) / maxPeriod;
-            const width = Math.max(0, Math.min(100, progress * 100));
+            const widthPercentage = Math.max(5, Math.min(100, progress * 100)); // Минимум 5% ширины
             
-            taskContent.style.width = `${width}%`;
+            // Вычисляем позицию градиента
+            const gradientPosition = 100 - widthPercentage;
             
-            // Обновляем цвет в зависимости от прогресса
-            updateTaskColor({target: dateInput});
+            taskContent.style.width = `${widthPercentage}%`;
+            taskContent.style.backgroundPosition = `${gradientPosition}% 0`;
         });
-    }
-
-    updateTaskProgress();
-
-    setInterval(updateTaskProgress, 1000);
-
-    function updateTaskColor(e) {
-        const taskItem = e.target.closest('.task-item');
-        const taskContent = taskItem.querySelector('.task-content');
-        const deadline = e.target.value;
-        
-        if (!deadline) {
-            taskContent.style.backgroundColor = '#45a049';
-            return;
         }
+
+        // Первый запуск
+        updateTaskProgress();
+
+        // Обновление каждую секунду
+        setInterval(updateTaskProgress, 1000);
+
+    
+
+    // function updateTaskColor(e) {
+    //     const taskItem = e.target.closest('.task-item');
+    //     const taskContent = taskItem.querySelector('.task-content');
+    //     const deadline = e.target.value;
         
-        const deadlineDate = new Date(deadline);
-        const today = new Date();
-        const timeDiff = deadlineDate - today;
-        const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    //     if (!deadline) {
+    //         taskContent.style.backgroundColor = '#45a049';
+    //         return;
+    //     }
         
-        if (daysDiff > 7) {
-            taskContent.style.backgroundColor = '#4CAF50';
-        } else if (daysDiff > 3) {
-            taskContent.style.backgroundColor = '#FFC107';
-        } else if (daysDiff >= 0) {
-            taskContent.style.backgroundColor = '#F44336'; 
-        } else {
-            taskContent.style.backgroundColor = '#9E9E9E';
-        }
-    }
+    //     const deadlineDate = new Date(deadline);
+    //     const today = new Date();
+    //     const timeDiff = deadlineDate - today;
+    //     const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+        
+    //     if (daysDiff > 7) {
+    //         taskContent.style.backgroundColor = '#4CAF50';
+    //     } else if (daysDiff > 3) {
+    //         taskContent.style.backgroundColor = '#FFC107';
+    //     } else if (daysDiff >= 0) {
+    //         taskContent.style.backgroundColor = '#F44336'; 
+    //     } else {
+    //         taskContent.style.backgroundColor = '#9E9E9E';
+    //     }
+    // }
 
 
 

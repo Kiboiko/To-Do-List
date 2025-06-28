@@ -13,7 +13,7 @@ body {
 .container{
     text-align: center;
     background-color: var(--bg-color);
-    padding: 15px;
+    padding: 10px 35px 10px 15px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
@@ -121,16 +121,32 @@ li {
     transition: width 0.5s;
 }
 
-.task-content{
+/* .task-content{
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: -1; /* Оставляем позади всех элементов */
-    width: 70%; /* Занимает всю ширину */
+    z-index: -1;
+    width: 100%; 
     background-color: #45a049;
     border-radius: 4px;
+} */
+
+.task-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  width: 100%;
+  border-radius: 8px;
+  transition: background 0.5s ease;
+  background: linear-gradient(to right, #4CAF50, #FFEB3B, #F44336);
+  background-size: 400% 100%;
+  background-position: right;  /* Начинаем слева */
+  overflow: hidden;
 }
 
 
